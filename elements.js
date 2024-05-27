@@ -1,4 +1,7 @@
 {
+    console.logComponent = (...args) => {
+        console.log(`%c ${this.nodeName} `, "background:purple;color:gold", ...args);
+    }
     const createElement = (tagName, props = {}, ...children) => {
         const element = document.createElement(tagName);
         if (props.attrs) {
@@ -57,7 +60,7 @@
                     :host([hidden]){display:none}`
                     }),
                     createElement("div", {
-                        innerHTML: `<img src="./images/components-quest-logo.svg">`
+                        innerHTML: `<img src="https://components-quest.github.io/images/components-quest-logo.svg">`
                     })
                 );
         }
@@ -103,7 +106,7 @@
         connectedCallback() {
             setTimeout(() => {
                 let outputmode = this.getAttribute("output-mode") || "console";
-                console.log(this.innerHTML);
+                console.logComponent(`outputmode:`, this.nodeName, outputmode);
                 function preProcessCode(code) {
                     return indentJSCode(code, 4).trim();
                 }
@@ -141,7 +144,7 @@
                     );// append
                 this.codeapiSnippet.addEventListener("event_explain", (e) => {
                     const code = e.target.code;
-                    console.warn(e.type, code);
+                    // console.warn(e.type, code);
                 });
             }, 100)// setTimeout
         }// connectedCallback
