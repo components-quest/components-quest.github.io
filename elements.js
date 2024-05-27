@@ -66,6 +66,27 @@
         }
     });
     // ************************************************************************
+    customElements.define("components-quest-header", class extends HTMLElement {
+        connectedCallback() {
+            this.append(
+                createElement("components-quest-logo", {})
+            );
+        }
+    });
+    customElements.define("components-quest-footer", class extends HTMLElement {
+        connectedCallback() {
+            this.append(
+                createElement("hr", {
+                    style: "margin-top:2em "
+                }),
+                createElement("span", {
+                    innerHTML: `Components Quest &copy; ${new Date().getFullYear()}`,
+                    onclick: () => location.href = "https://components-quest.github.io/"
+                }),
+            );
+        }
+    });
+    // ************************************************************************
     customElements.whenDefined("mark-down").then(() => {
         customElements.define("mark-down-load-file", class extends HTMLElement {
             connectedCallback() {
