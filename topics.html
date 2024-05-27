@@ -1,0 +1,176 @@
+Sure, here is an expanded list of properties and methods associated with Web Components, including `isConnected` and
+others:
+
+### Custom Elements
+
+#### Methods
+- **customElements.define(name, constructor[, options])**: Defines a new custom element.
+- **customElements.get(name)**: Returns the constructor for the named custom element.
+- **customElements.whenDefined(name)**: Returns a promise that resolves when the named custom element is defined.
+- **HTMLElement.attachInternals()**: Returns an ElementInternals object that allows you to associate a shadow root and
+other functionality with the element.
+
+#### Properties
+- **customElements**: Provides access to the CustomElementRegistry, which allows you to register and retrieve custom
+elements.
+
+### HTMLElement (Base class for custom elements)
+
+#### Properties
+- **HTMLElement.isConnected**: Returns a boolean indicating whether the element is connected to the document.
+- **HTMLElement.attachShadow({ mode: 'open' | 'closed' })**: Attaches a shadow DOM tree to the element and returns a
+reference to its ShadowRoot.
+- **HTMLElement.shadowRoot**: Returns the shadow root of the element if mode is 'open', otherwise returns null.
+- **HTMLElement.assignedSlot**: Returns the slot element in which the element is assigned, or null if the element is not
+assigned to a slot.
+- **HTMLElement.innerHTML**: Gets or sets the HTML markup contained within the element.
+- **HTMLElement.outerHTML**: Gets or sets the HTML markup of the element and its descendants.
+- **HTMLElement.innerText**: Gets or sets the text content of the element.
+- **HTMLElement.slot**: Returns the slot attribute of the element, allowing it to be placed into a named slot.
+- **HTMLElement.title**: Gets or sets the title attribute of the element.
+- **HTMLElement.lang**: Gets or sets the language of the element.
+- **HTMLElement.dir**: Gets or sets the text direction of the element.
+
+### Shadow DOM
+
+#### Methods
+- **Element.attachShadow({ mode: 'open' | 'closed' })**: Attaches a shadow DOM tree to the element and returns a
+reference to its ShadowRoot.
+- **ShadowRoot.getElementById(id)**: Returns the first element within the shadow DOM that matches the specified ID.
+- **ShadowRoot.querySelector(selectors)**: Returns the first element within the shadow DOM that matches the specified
+group of selectors.
+- **ShadowRoot.querySelectorAll(selectors)**: Returns a static NodeList of elements within the shadow DOM that match the
+specified group of selectors.
+- **ShadowRoot.host**: Returns the element to which the shadow DOM is attached.
+
+#### Properties
+- **ShadowRoot.mode**: Indicates whether the shadow root is 'open' or 'closed'.
+- **ShadowRoot.delegatesFocus**: Indicates whether focus delegation behavior is enabled.
+- **ShadowRoot.innerHTML**: Gets or sets the HTML markup contained within the shadow DOM.
+- **ShadowRoot.host**: The element to which the shadow DOM is attached.
+
+### HTML Templates
+
+#### Properties and Methods
+- **HTMLTemplateElement.content**: A DocumentFragment that holds the contents of the template.
+
+### `<slot>` Element
+    - **slot.name**: A slot's name attribute specifies the slot's name.
+    - **slot.assignedNodes({ flatten: boolean })**: Returns a sequence of nodes assigned to this slot.
+    - **slot.assignedElements({ flatten: boolean })**: Returns a sequence of elements assigned to this slot.
+
+    ### Lifecycle Callbacks (Custom Elements)
+    - **connectedCallback()**: Invoked each time the custom element is appended into a document-connected element.
+    - **disconnectedCallback()**: Invoked each time the custom element is disconnected from the document's DOM.
+    - **adoptedCallback()**: Invoked each time the custom element is moved to a new document.
+    - **attributeChangedCallback(name, oldValue, newValue)**: Invoked each time one of the custom element's attributes
+    is added, removed, or changed.
+
+    ### Observed Attributes
+    - **static get observedAttributes()**: Returns an array of attribute names to be observed for changes.
+
+    ### Example Enhanced Custom Element
+
+    Here’s an enhanced custom element incorporating several properties and methods:
+
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Enhanced Web Components Example</title>
+    </head>
+
+    <body>
+        <my-element></my-element>
+
+        <script>
+            // Define the template
+            const template = document.createElement('template');
+            template.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    padding: 10px;
+                    background: lightgrey;
+                }
+                p {
+                    color: blue;
+                }
+            </style>
+            <p>Hello, Web Components!</p>
+            <slot></slot>
+        `;
+
+            // Define the custom element
+            class MyElement extends HTMLElement {
+                constructor() {
+                    super();
+                    const shadowRoot = this.attachShadow({ mode: 'open' });
+                    shadowRoot.appendChild(template.content.cloneNode(true));
+                    this.attachInternals();
+                }
+
+                // Lifecycle callbacks
+                connectedCallback() {
+                    console.log('Custom element added to page.');
+                    this.updateStyle();
+                }
+
+                disconnectedCallback() {
+                    console.log('Custom element removed from page.');
+                }
+
+                adoptedCallback() {
+                    console.log('Custom element moved to new page.');
+                }
+
+                attributeChangedCallback(name, oldValue, newValue) {
+                    console.log(`Attribute: ${name} changed from ${oldValue} to ${newValue}`);
+                    this.updateStyle();
+                }
+
+                // List of observed attributes
+                static get observedAttributes() {
+                    return ['data-color'];
+                }
+
+                // Custom methods
+                updateStyle() {
+                    if (this.hasAttribute('data-color')) {
+                        this.shadowRoot.querySelector('p').style.color = this.getAttribute('data-color');
+                    }
+                }
+
+                // Custom properties
+                get isConnected() {
+                    return super.isConnected;
+                }
+
+                get slot() {
+                    return super.slot;
+                }
+
+                set slot(value) {
+                    super.slot = value;
+                }
+            }
+
+            // Register the custom element
+            customElements.define('my-element', MyElement);
+        </script>
+    </body>
+
+    </html>
+    ```
+
+    In this example, the custom element `MyElement`:
+    - Uses a shadow DOM for encapsulation.
+    - Observes changes to the `data-color` attribute.
+    - Implements lifecycle callbacks to log messages when the element is added, removed, or moved.
+    - Updates its style based on the `data-color` attribute.
+    - Includes several properties and methods inherited from `HTMLElement`.
+
+    This comprehensive example demonstrates how to use many of the properties and methods related to Web Components.

@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <title>Components Quest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+    <script src="https://load-file.github.io/element.js"></script>
+    <script src="https://mark-down.github.io/element.js"></script>
+    <script src="elements.js"></script>
+    <!-- needs some async load handling: 
+        <load-codapi version="0.19.7"></load-codapi> -->
+    <script src="https://unpkg.com/@antonz/codapi@0.19.7/dist/snippet.js"></script>
+</head>
+
+<body>
+    <components-quest-logo></components-quest-logo>
+    <mark-down-file foo=21 src="./README.md">23</mark-down-file>
+    <h2>Basic codapi example</h2>
+    <component-script>
+        const greeting = (name) => `Hello, name, welcome!`;
+        const msg = "Hello, World!";
+        console.log(greeting("Danny"));
+    </component-script>
+    <h2>Creating a Web Component example</h2>
+    <component-script>
+        let cname = "my-component";
+        if(customElements.get(cname)) cname += "_"+crypto.randomUUID();
+        customElements.define(cname, class extends HTMLElement{
+        connectedCallback(){
+        this.innerHTML = `Hello! ` + cname;
+        }
+        });
+        return document.createElement(cname);
+    </component-script>
+</body>
+
+</html>

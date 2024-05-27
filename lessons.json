@@ -1,0 +1,11 @@
+{
+  "your first Web Component": {
+    "uri": "https://jsfiddle.net/Components_Quest/boy6efa7/",
+    "title": "using the connectedCallback",
+    "terms": [
+      "customElements.define",
+      "class extends HTMLElement",
+      "connectedCallback"
+    ]
+  }
+}
